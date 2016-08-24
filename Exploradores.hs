@@ -29,10 +29,10 @@ padAB n base (Bin i x d) = pad n ++ show x ++ padAB 4 (base+l) i ++ "\n" ++ padA
 
 --Ejercicio 1
 expNulo :: Explorador a b
-expNulo = undefined
+expNulo = (\x -> [])
 
 expId :: Explorador a a
-expId = undefined
+expId = (\x -> [x])
 
 expHijosRT :: Explorador (RoseTree a) (RoseTree a)
 expHijosRT = undefined
@@ -93,7 +93,7 @@ ramasRT = foldRT (\root recu -> if length recu == 0 then [[root]] else map ((:) 
 
 --Ejercicio 7
 ifExp :: (a->Bool) -> Explorador a b -> Explorador a b -> Explorador a b
-ifExp = undefined
+ifExp condicion exp1 exp2 = (\estructura -> if condicion estructura then exp1 estructura else exp2 estructura)
 
 --Ejercicio 8
 (<++>) :: Explorador a b -> Explorador a b -> Explorador a b
