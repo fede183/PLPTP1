@@ -22,7 +22,7 @@ pad i = replicate i ' '
 
 instance Show a => Show (AB a) where
   show = padAB 0 0
-  
+
 padAB _ _ Nil = ""
 padAB n base (Bin i x d) = pad n ++ show x ++ padAB 4 (base+l) i ++ "\n" ++ padAB (n+4+base+l) base d where l = length $ show x
 
@@ -44,14 +44,17 @@ expTail :: Explorador [a] a
 expTail = undefined
 
 --Ejercicio 2
---foldNat :: undefined
-foldNat = undefined
+foldNat :: (Integer -> b -> b) -> b -> Integer -> b
+foldNat recu base n | n < 0 = error "No se permiten numero negativos"
+                    | n == 0 = base
+                    | otherwise = recu n (foldNat recu base (n-1))
 
---foldRT :: undefined
-foldRT = undefined
+foldRT :: (a -> [b] -> b) -> RoseTree a -> b
+foldRT recu (Rose root hijos) = recu root (map (foldRT recu) hijos)
 
---foldAB :: undefined
-foldAB = undefined
+foldAB :: (b -> a -> b -> b) -> b -> AB a -> b
+foldAB recu base Nil = base
+foldAB recu base (Bin izq root der) = recu (foldAB recu base izq) root (foldAB recu base der)
 
 --Ejercicio 3
 singletons :: Explorador [a] [a]
@@ -61,11 +64,15 @@ sufijos :: Explorador [a] [a]
 sufijos = undefined
 
 --Ejercicio 4
---listasQueSuman :: Explorador Integer ?
-listasQueSuman = undefined
+listasQueSuman :: Explorador Integer [Integer]
+listasQueSuman = (\n -> if n == 1 then [[1]] else [n]:[y:lista | y <- [1..n-1], lista <- listasQueSuman (n-y)])
+-- ideas de porqué no se puede usar foldNat:
+-- el caso base de foldNat es 0, y nosotros queremos parar en 1.
+-- También, el primer elemento que procesa es n, cuando lo que
+-- no hace recursion estructural ?
 
 --Ejercicio 5
---preorder :: undefined
+-- preorder :: undefined
 preorder = undefined
 
 --inorder :: undefined
@@ -76,13 +83,14 @@ postorder = undefined
 
 --Ejercicio 6
 dfsRT :: Explorador (RoseTree a) a
-dfsRT = undefined
+dfsRT = foldRT (\root recu -> root:concat recu)
 
 hojasRT :: Explorador (RoseTree a) a
-hojasRT = undefined
+hojasRT = foldRT (\root recu -> if length recu == 0 then [root] else concat recu)
 
 ramasRT :: Explorador (RoseTree a) [a]
 ramasRT = undefined
+-- ramasRT = foldRT (\root recu -> if length recu == 0 then [[root]] else map (map ((:) root)) recu)
 
 --Ejercicio 7
 ifExp :: (a->Bool) -> Explorador a b -> Explorador a b -> Explorador a b
@@ -104,5 +112,5 @@ ifExp = undefined
 listasDeLongitud :: Explorador Integer [Integer]
 listasDeLongitud = undefined
 
-(<*>) :: Explorador a a -> Explorador a [a] 
-(<*>) = undefined
+-- (<*>) :: Explorador a a -> Explorador a [a]
+-- (<*>) = undefined
