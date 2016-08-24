@@ -26,22 +26,53 @@ instance Show a => Show (AB a) where
 padAB _ _ Nil = ""
 padAB n base (Bin i x d) = pad n ++ show x ++ padAB 4 (base+l) i ++ "\n" ++ padAB (n+4+base+l) base d where l = length $ show x
 
+listaAB :: AB a-> [AB a]
+listaAB Nil = []
+listaAB Bin (AB a) r (AB b) = (a:(b:[]))
+
+listaRT :: RoseTree a -> [RoseTree a]
+listaRT Rose a = []
+listaRT Rose a b = b 
+
+cola :: [a] -> [a]
+cola [] = []
+cola (x:xs) = xs
+
+listaPorElemento :: [a] -> [[a]]
+listaPorElemento [] = []
+listaPorElemento (x:xs) = [x]: listaPorElemento(xs)
+
+todosLosSubfijos :: [a] -> [[a]]
+todosLosSubfijos [] = []
+todosLosSubfijos (x:xs) = (x:xs):todosLosSubfijos(xs)
+
+preOrderAux :: AB a -> [a]
+preOrderAux Nil = []
+preOrderAux Bin (AB a) r (AB b) = r : (preOrderAux(a) ++ preOrderAux(b)) 
+
+inorderAux :: AB a -> [a]
+inorderAux Nil = []
+inorderAux Bin (AB a) r (AB b) = inorderAux(a) ++ [r] ++ inorderAux(b) 
+
+postorderAux :: AB a -> [a]
+postorderAux Nil = []
+postorderAux Bin (AB a) r (AB b) = postorderAux(a) ++ postorderAux(b) ++ [r] 
 
 --Ejercicio 1
 expNulo :: Explorador a b
-expNulo = undefined
+expNulo = \x 
 
 expId :: Explorador a a
-expId = undefined
+expId = \x -> [x]
 
 expHijosRT :: Explorador (RoseTree a) (RoseTree a)
-expHijosRT = undefined
+expHijosRT = \r -> listaRT(r)
 
 expHijosAB :: Explorador(AB a) (AB a)
-expHijosAB = undefined
+expHijosAB = \a -> listaAB(a)
 
 expTail :: Explorador [a] a
-expTail = undefined
+expTail = \a -> cola(a)
 
 --Ejercicio 2
 --foldNat :: undefined
@@ -55,24 +86,24 @@ foldAB = undefined
 
 --Ejercicio 3
 singletons :: Explorador [a] [a]
-singletons = undefined
+singletons = \x -> listaPorElemento(x)
 
 sufijos :: Explorador [a] [a]
-sufijos = undefined
+sufijos = \x -> todosLosSubfijos(x)
 
 --Ejercicio 4
 --listasQueSuman :: Explorador Integer ?
 listasQueSuman = undefined
 
 --Ejercicio 5
---preorder :: undefined
-preorder = undefined
+preorder :: Explorador (AB a) a
+preorder = \x -> preOrderAux(x)
 
---inorder :: undefined
-inorder = undefined
+inorder :: Explorador (AB a) a
+inorder = \x -> inorderAux(x)
 
---postorder :: undefined
-postorder = undefined
+postorder :: Explorador (AB a) a
+postorder = \x -> postorderAux(x)
 
 --Ejercicio 6
 dfsRT :: Explorador (RoseTree a) a
