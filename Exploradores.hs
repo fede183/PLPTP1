@@ -129,7 +129,7 @@ ifExp condicion exp1 exp2 = (\estructura -> if condicion estructura then exp1 es
 
 --Ejercicio 8
 (<++>) :: Explorador a b -> Explorador a b -> Explorador a b
-(<++>) = undefined
+(<++>) exp1 exp2 = (\estructura -> exp1 estructura ++ exp2 estructura)
 
 --Ejercicio 9
 (<.>) :: Explorador b c -> Explorador a b -> Explorador a c
