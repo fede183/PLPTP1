@@ -141,7 +141,7 @@ ifExp condicion exp1 exp2 = (\estructura -> if condicion estructura then exp1 es
 
 --Ejercicio 11 (implementar al menos una de las dos)
 listasDeLongitud :: Explorador Integer [Integer]
-listasDeLongitud = undefined
+listasDeLongitud = (\n -> map (take n) [lista | y <- [n..], lista <- listasQueSuman y, (length lista) >= n])
 
 (<*>) :: Explorador a a -> Explorador a [a]
 (<*>) = undefined
