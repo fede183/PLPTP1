@@ -89,8 +89,7 @@ hojasRT :: Explorador (RoseTree a) a
 hojasRT = foldRT (\root recu -> if length recu == 0 then [root] else concat recu)
 
 ramasRT :: Explorador (RoseTree a) [a]
-ramasRT = undefined
--- ramasRT = foldRT (\root recu -> if length recu == 0 then [[root]] else map (map ((:) root)) recu)
+ramasRT = foldRT (\root recu -> if length recu == 0 then [[root]] else map ((:) root) (concat recu))
 
 --Ejercicio 7
 ifExp :: (a->Bool) -> Explorador a b -> Explorador a b -> Explorador a b
