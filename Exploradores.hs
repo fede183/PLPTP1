@@ -100,7 +100,7 @@ inorder :: Explorador (AB a) a
 inorder = foldAB (\izq raiz der -> izq ++ [raiz] ++ der)[]
 
 postorder :: Explorador (AB a) a
-postorder = foldAB (\izq raiz der -> izq ++ der ++ [raiz])[] 
+postorder = foldAB (\izq raiz der -> izq ++ der ++ [raiz])[]
 
 --Ejercicio 6
 dfsRT :: Explorador (RoseTree a) a
@@ -131,7 +131,7 @@ ifExp condicion exp1 exp2 = (\estructura -> if condicion estructura then exp1 es
 --Ejercicio 11 (implementar al menos una de las dos)
 listasDeLongitud :: Explorador Integer [Integer]
 listasDeLongitud = undefined
--- listasDeLongitud = (\n -> map (take n) [lista | y <- [n..], lista <- listasQueSuman y, (length lista) >= n])
+-- listasDeLongitud = (\n -> map (take (fromIntegral n)) [lista | y <- [n..], lista <- listasQueSuman y, (length lista) >= fromIntegral n])
 
 (<*>) :: Explorador a a -> Explorador a [a]
 (<*>) = undefined
