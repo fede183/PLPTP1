@@ -94,13 +94,13 @@ listasQueSuman = (\n -> if n == 1 then [[1]] else [n]:[y:lista | y <- [1..n-1], 
 --Ejercicio 5
 
 preorder :: Explorador (AB a) a
-preorder = \xs -> foldAB (\izq raiz der -> raiz : (izq ++ der)) [] xs
+preorder = foldAB (\izq raiz der -> raiz : izq ++ der)[]
 
 inorder :: Explorador (AB a) a
-inorder = \xs -> foldAB (\izq raiz der -> (izq ++ [raiz] ++ der)) [] xs
+inorder = foldAB (\izq raiz der -> izq ++ [raiz] ++ der)[]
 
 postorder :: Explorador (AB a) a
-postorder = \xs -> foldAB (\izq raiz der -> izq ++ der ++ [raiz]) [] xs
+postorder = foldAB (\izq raiz der -> izq ++ der ++ [raiz])[] 
 
 --Ejercicio 6
 dfsRT :: Explorador (RoseTree a) a
@@ -122,7 +122,7 @@ ifExp condicion exp1 exp2 = (\estructura -> if condicion estructura then exp1 es
 
 --Ejercicio 9
 (<.>) :: Explorador b c -> Explorador a b -> Explorador a c
-(<.>) = undefined
+(<.>) exp1 exp2 = (\estructura -> concat(map (exp1) (exp2 estructura)))
 
 --Ejercicio 10
 (<^>) :: Explorador a a -> Integer -> Explorador a a
@@ -130,7 +130,8 @@ ifExp condicion exp1 exp2 = (\estructura -> if condicion estructura then exp1 es
 
 --Ejercicio 11 (implementar al menos una de las dos)
 listasDeLongitud :: Explorador Integer [Integer]
-listasDeLongitud = (\n -> map (take n) [lista | y <- [n..], lista <- listasQueSuman y, (length lista) >= n])
+listasDeLongitud = undefined
+-- listasDeLongitud = (\n -> map (take n) [lista | y <- [n..], lista <- listasQueSuman y, (length lista) >= n])
 
 (<*>) :: Explorador a a -> Explorador a [a]
 (<*>) = undefined
