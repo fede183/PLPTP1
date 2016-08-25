@@ -28,11 +28,11 @@ padAB n base (Bin i x d) = pad n ++ show x ++ padAB 4 (base+l) i ++ "\n" ++ padA
 
 listaAB :: AB a-> [AB a]
 listaAB Nil = []
-listaAB Bin (AB a) r (AB b) = (a:(b:[]))
+listaAB (Bin izq r der) = (izq:(der:[]))
 
 listaRT :: RoseTree a -> [RoseTree a]
-listaRT Rose a = []
-listaRT Rose a b = b
+listaRT (Rose raiz []) = []
+listaRT (Rose raiz hijos) = hijos
 
 cola :: [a] -> [a]
 cola [] = []
@@ -46,17 +46,6 @@ todosLosSubfijos :: [a] -> [[a]]
 todosLosSubfijos [] = []
 todosLosSubfijos (x:xs) = (x:xs):todosLosSubfijos(xs)
 
-preOrderAux :: AB a -> [a]
-preOrderAux Nil = []
-preOrderAux Bin (AB a) r (AB b) = r : (preOrderAux(a) ++ preOrderAux(b))
-
-inorderAux :: AB a -> [a]
-inorderAux Nil = []
-inorderAux Bin (AB a) r (AB b) = inorderAux(a) ++ [r] ++ inorderAux(b)
-
-postorderAux :: AB a -> [a]
-postorderAux Nil = []
-postorderAux Bin (AB a) r (AB b) = postorderAux(a) ++ postorderAux(b) ++ [r]
 
 --Ejercicio 1
 expNulo :: Explorador a b
@@ -89,10 +78,10 @@ foldAB recu base (Bin izq root der) = recu (foldAB recu base izq) root (foldAB r
 
 --Ejercicio 3
 singletons :: Explorador [a] [a]
-singletons = \x -> listaPorElemento(x)
+singletons = \xs -> foldr (\y recu -> [y]:recu) [[]] xs
 
 sufijos :: Explorador [a] [a]
-sufijos = \x -> todosLosSubfijos(x)
+sufijos = \xs -> foldr (\y recu -> (map (++ [y]) recu) ++ [[y]] ) [[]] xs
 
 --Ejercicio 4
 listasQueSuman :: Explorador Integer [Integer]
@@ -105,13 +94,13 @@ listasQueSuman = (\n -> if n == 1 then [[1]] else [n]:[y:lista | y <- [1..n-1], 
 --Ejercicio 5
 
 preorder :: Explorador (AB a) a
-preorder = \x -> preOrderAux(x)
+preorder = \xs -> foldAB (\izq raiz der -> raiz : (izq ++ der)) [] xs
 
 inorder :: Explorador (AB a) a
-inorder = \x -> inorderAux(x)
+inorder = \xs -> foldAB (\izq raiz der -> (izq ++ [raiz] ++ der)) [] xs
 
 postorder :: Explorador (AB a) a
-postorder = \x -> postorderAux(x)
+postorder = \xs -> foldAB (\izq raiz der -> izq ++ der ++ [raiz]) [] xs
 
 --Ejercicio 6
 dfsRT :: Explorador (RoseTree a) a
