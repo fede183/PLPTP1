@@ -1,5 +1,7 @@
 module Exploradores (Explorador, AB(Nil,Bin), RoseTree(Rose), foldNat, foldRT, foldAB, expNulo, expId, expHijosRT, expHijosAB, expTail, ifExp, singletons, sufijos, inorder, preorder, postorder, dfsRT, ramasRT, hojasRT, listasQueSuman, listasDeLongitud, (<.>), (<^>), (<++>), (<*>)) where
 
+import Prelude hiding ((<*>))
+
 --Definiciones de tipos
 
 type Explorador a b = a -> [b]
@@ -92,7 +94,6 @@ listasQueSuman = (\n -> if n == 1 then [[1]] else [n]:[y:lista | y <- [1..n-1], 
 -- no hace recursion estructural ?
 
 --Ejercicio 5
-
 preorder :: Explorador (AB a) a
 preorder = foldAB (\izq raiz der -> raiz : izq ++ der)[]
 
