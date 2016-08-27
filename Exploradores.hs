@@ -36,19 +36,6 @@ listaRT :: RoseTree a -> [RoseTree a]
 listaRT (Rose raiz []) = []
 listaRT (Rose raiz hijos) = hijos
 
-cola :: [a] -> [a]
-cola [] = []
-cola (x:xs) = xs
-
-listaPorElemento :: [a] -> [[a]]
-listaPorElemento [] = []
-listaPorElemento (x:xs) = [x]: listaPorElemento(xs)
-
-todosLosSubfijos :: [a] -> [[a]]
-todosLosSubfijos [] = []
-todosLosSubfijos (x:xs) = (x:xs):todosLosSubfijos(xs)
-
-
 --Ejercicio 1
 expNulo :: Explorador a b
 expNulo = (\x -> [])
@@ -63,7 +50,7 @@ expHijosAB :: Explorador(AB a) (AB a)
 expHijosAB = (\a -> listaAB(a))
 
 expTail :: Explorador [a] a
-expTail = (\a -> cola(a))
+expTail = (\a -> tail(a))
 
 --Ejercicio 2
 foldNat :: (Integer -> b -> b) -> b -> Integer -> b
@@ -83,7 +70,7 @@ singletons :: Explorador [a] [a]
 singletons = \xs -> foldr (\y recu -> [y]:recu) [[]] xs
 
 sufijos :: Explorador [a] [a]
-sufijos = \xs -> foldr (\y recu -> (map (++ [y]) recu) ++ [[y]] ) [[]] xs
+sufijos = \xs -> foldr (\y recu -> (head(recu) ++ [y]):recu ) [[]] xs
 
 --Ejercicio 4
 listasQueSuman :: Explorador Integer [Integer]
