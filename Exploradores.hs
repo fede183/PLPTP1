@@ -33,7 +33,7 @@ listaAB Nil = []
 listaAB (Bin izq r der) = (izq:(der:[]))
 
 listaRT :: RoseTree a -> [RoseTree a]
-listaRT (Rose raiz []) = []
+-- listaRT (Rose raiz []) = []
 listaRT (Rose raiz hijos) = hijos
 
 --Ejercicio 1
@@ -50,7 +50,7 @@ expHijosAB :: Explorador(AB a) (AB a)
 expHijosAB = (\a -> listaAB(a))
 
 expTail :: Explorador [a] a
-expTail = (\a -> tail(a))
+expTail = (\a -> if length a /= 0 then tail(a) else [])
 
 --Ejercicio 2
 foldNat :: (Integer -> b -> b) -> b -> Integer -> b
@@ -67,14 +67,14 @@ foldAB recu base (Bin izq root der) = recu (foldAB recu base izq) root (foldAB r
 
 --Ejercicio 3
 singletons :: Explorador [a] [a]
-singletons = \xs -> foldr (\y recu -> [y]:recu) [[]] xs
+singletons = foldr (\x recu -> [x]:recu) []
 
 sufijos :: Explorador [a] [a]
-sufijos = \xs -> foldr (\y recu -> (head(recu) ++ [y]):recu ) [[]] xs
+sufijos = foldr (\x recu -> (([x] ++ head(recu)):recu)) [[]]
 
 --Ejercicio 4
 listasQueSuman :: Explorador Integer [Integer]
-listasQueSuman = (\n -> if n == 1 then [[1]] else [n]:[y:lista | y <- [1..n-1], lista <- listasQueSuman (n-y)])
+listasQueSuman = (\n -> if n == 0 then [[]] else [n]:[y:lista | y <- [1..n-1], lista <- listasQueSuman (n-y)])
 -- ideas de porqué no se puede usar foldNat:
 -- el caso base de foldNat es 0, y nosotros queremos parar en 1.
 -- También, el primer elemento que procesa es n, cuando lo que
@@ -115,6 +115,7 @@ ifExp condicion exp1 exp2 = (\estructura -> if condicion estructura then exp1 es
 --Ejercicio 10
 (<^>) :: Explorador a a -> Integer -> Explorador a a
 (<^>) = undefined
+-- (<^>) exp1 = (\estructura n -> (iterate (exp1 <.>) (exp1 estructura)) !! n)
 
 --Ejercicio 11 (implementar al menos una de las dos)
 listasDeLongitud :: Explorador Integer [Integer]
@@ -123,3 +124,4 @@ listasDeLongitud = undefined
 
 (<*>) :: Explorador a a -> Explorador a [a]
 (<*>) = undefined
+-- (<^>) exp1 = (\estructura -> takeWhile(/= [])(iterate (exp1 <.>) (exp1 estructura)))
