@@ -18,10 +18,10 @@ allTests = test [
   "exploradoresRT" ~: testsExpRT,
   "exploradoresCondicional" ~: testsExpCondicional,
   "exploradoresConcatenacion" ~: testsExpConcatenacion,
-  "exploradoresComposicion" ~: testsExpComposicion
+  "exploradoresComposicion" ~: testsExpComposicion,
   -- "exploradoresRepeticion" ~: testsExpRepeticion,
   -- "exploradoresListasDeLongitud" ~: testsExpListasDeLongitud,
-  -- "exploradoresComposicion1" ~: testsExpComposicion1
+  "exploradoresComposicion1" ~: testsExpComposicion1
   ]
 
 testsExpSencillos = test [
