@@ -20,7 +20,7 @@ allTests = test [
   "exploradoresConcatenacion" ~: testsExpConcatenacion,
   "exploradoresComposicion" ~: testsExpComposicion,
   "exploradoresRepeticion" ~: testsExpRepeticion,
-  -- "exploradoresListasDeLongitud" ~: testsExpListasDeLongitud,
+  "exploradoresListasDeLongitud" ~: testsExpListasDeLongitud,
   "exploradoresComposicion1" ~: testsExpComposicion1
   ]
 
