@@ -19,7 +19,7 @@ allTests = test [
   "exploradoresCondicional" ~: testsExpCondicional,
   "exploradoresConcatenacion" ~: testsExpConcatenacion,
   "exploradoresComposicion" ~: testsExpComposicion,
-  -- "exploradoresRepeticion" ~: testsExpRepeticion,
+  "exploradoresRepeticion" ~: testsExpRepeticion,
   -- "exploradoresListasDeLongitud" ~: testsExpListasDeLongitud,
   "exploradoresComposicion1" ~: testsExpComposicion1
   ]
