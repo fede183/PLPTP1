@@ -114,7 +114,8 @@ ifExp condicion exp1 exp2 = (\estructura -> if condicion estructura then exp1 es
 
 --Ejercicio 10
 (<^>) :: Explorador a a -> Integer -> Explorador a a
-(<^>) exp1 n = (\estructura -> foldNat (\n recu -> concat (map (exp1) recu)) (exp1 estructura) (n-1))
+-- (<^>) exp1 n = (\estructura -> foldNat (\n recu -> concat (map (exp1) recu)) (exp1 estructura) (n-1))
+(<^>) exp1 n = (iterate ((<.>) exp1) exp1) !! fromIntegral (n-1)
 
 --Ejercicio 11 (implementar al menos una de las dos)
 listasDeLongitud :: Explorador Integer [Integer]
