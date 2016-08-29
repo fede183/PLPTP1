@@ -122,5 +122,4 @@ listasDeLongitud = undefined
 -- listasDeLongitud = (\n -> map (take (fromIntegral n)) [lista | y <- [n..], lista <- listasQueSuman y, (length lista) >= fromIntegral n])
 
 (<*>) :: Explorador a a -> Explorador a [a]
-(<*>) = undefined
--- (<^>) exp1 = (\estructura -> takeWhile(/= [])(iterate (exp1 <.>) (exp1 estructura)))
+(<*>) exp1 = (\estructura -> takeWhile (\recu -> length recu /= 0 ) (iterate (\recu -> exp1 (head recu)) [estructura]))
