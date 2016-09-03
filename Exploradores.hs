@@ -125,8 +125,12 @@ listasDeLongitud :: Explorador Integer [Integer]
 listasDeLongitud = (\n -> [lista | y <- [n..], lista <- listasQueSumanConLong y n])
 
 listasQueSumanConLong :: Integer -> Integer -> [[Integer]]
-listasQueSumanConLong = (\x n -> if n == 0 then [[]] else [y:lista | y <- [1..x], lista <- listasQueSumanConLong (x-y) (n-1), sum(lista) + y == x])
+listasQueSumanConLong _ 0 = [[]]
+listasQueSumanConLong x 1 = [[x]]
+listasQueSumanConLong x n = [y:lista  | y <- [1..(x-1)], lista <- listasQueSumanConLong (x-y) (n-1)]
 
+-- listasQueSumanConLong = (\x n -> if n == 0 then [[]] else [y:lista | y <- [1..x], lista <- listasQueSumanConLong (x-y) (n-1)])
+-- listasQueSuman = (\n -> if n == 0 then [[]] else [n]:[y:lista | y <- [1..n-1], lista <- listasQueSuman (n-y)])
 
 (<*>) :: Explorador a a -> Explorador a [a]
 (<*>) exp1 = (\estructura -> takeWhile (\recu -> length recu /= 0 ) (iterate (\recu -> concat (map exp1 recu)) [estructura]))
