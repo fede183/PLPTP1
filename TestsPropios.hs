@@ -45,12 +45,18 @@ testsExpAB = test [
   "CAFE" ~=? preorder ab8,
   "CAFE CON" ~=? preorder ab9,
   "CAFE CON LECHE" ~=? preorder ab10,
+  "CAFE CON LECHE" ~=? preorder ab11,
+  "CAFE CON LECHE" ~=? preorder ab12,
   "FAEC" ~=? inorder ab8,
   "FAECOCN " ~=? inorder ab9,
   "FAECOCN CEHLE " ~=? inorder ab10,
+  "EHCEL NOC EFAC" ~=? inorder ab11,
+  "CAFE CON LECHE" ~=? inorder ab12,
   "FEAC" ~=? postorder ab8,
   "FEAONC C" ~=? postorder ab9,
-  "FEAONCCHEEL  C" ~=? postorder ab10
+  "FEAONCCHEEL  C" ~=? postorder ab10,
+  "EHCEL NOC EFAC" ~=? postorder ab11,
+  "EHCEL NOC EFAC" ~=? postorder ab12
   ]
 
 testsExpRT = test [
@@ -58,16 +64,22 @@ testsExpRT = test [
   " CON" ~=? dfsRT rt2,
   "CAFE" ~=? dfsRT rt3,
   "CAFE CON LECHE" ~=? dfsRT rt4,
+  "CAFE CON LECHE" ~=? dfsRT rt5,
+  "CAFE CON LECHE" ~=? dfsRT rt6,
 
   [" L"," E"," C"," H"," E"]  ~=? ramasRT rt1,
   [" C"," O"," N"] ~=? ramasRT rt2,
   ["CA","CF","CE"]  ~=? ramasRT rt3,
   ["CA","CF","CE","C C","C O","C N","C L","C E","C C","C H","C E"] ~=? ramasRT rt4,
+  ["CAFE CON LECHE"] ~=? ramasRT rt5,
+  ["CA","CF","CE","C ","CC","CO","CN","C ","CL","CE","CC","CH","CE"] ~=? ramasRT rt6,
 
   "LECHE" ~=? hojasRT rt1,
   "CON" ~=? hojasRT rt2,
   "AFE" ~=? hojasRT rt3,
-  "AFECONLECHE" ~=? hojasRT rt4
+  "AFECONLECHE" ~=? hojasRT rt4,
+  "E" ~=? hojasRT rt5,
+  "AFE CON LECHE" ~=? hojasRT rt6
   ]
 
 testsExpCondicional = test [
@@ -138,6 +150,9 @@ ab8 = Bin (ab1) 'C' (Nil)--CAFE
 ab9 = Bin (ab1) 'C' (ab5)--CAFE CON
 ab10 = Bin (ab1) 'C' (ab7)--CAFE CON LECHE
 
+ab11 = Bin (Bin (Bin (Bin (Bin (Bin (Bin (Bin (Bin (Bin (Bin (Bin (Bin (Bin (Nil) 'E' (Nil)) 'H' (Nil)) 'C' (Nil)) 'E' (Nil)) 'L' (Nil)) ' ' (Nil)) 'N' (Nil)) 'O' (Nil)) 'C' (Nil)) ' ' (Nil)) 'E' (Nil)) 'F' (Nil)) 'A' (Nil)) 'C' (Nil)
+ab12 = Bin (Nil) 'C' (Bin (Nil) 'A' (Bin (Nil) 'F' (Bin (Nil) 'E' (Bin (Nil) ' ' (Bin (Nil) 'C' (Bin (Nil) 'O' (Bin (Nil) 'N' (Bin (Nil) ' ' (Bin (Nil) 'L' (Bin (Nil) 'E' (Bin (Nil) 'C' (Bin (Nil) 'H' (Bin (Nil) 'E' (Nil))))))))))))))
+
 rtHoja x = Rose x []
 rt11 = rtHoja 'L'
 rt12 = rtHoja 'E'
@@ -154,6 +169,8 @@ rt32 =  rtHoja 'F'
 rt33 =  rtHoja 'E'
 rt3 = Rose 'C' [rt31,rt32,rt33] --CAFE
 rt4 = Rose 'C' [rt31,rt32,rt33,rt2,rt1] --CAFE CON LECHE
+rt5 = Rose 'C' [Rose 'A' [Rose 'F' [Rose 'E' [Rose ' ' [Rose 'C' [Rose 'O' [Rose 'N' [Rose ' ' [Rose 'L' [Rose 'E' [Rose 'C' [Rose 'H' [Rose 'E' []]]]]]]]]]]]]]
+rt6 = Rose 'C' [Rose 'A' [],Rose 'F' [],Rose 'E' [],Rose ' ' [],Rose 'C' [],Rose 'O' [],Rose 'N' [],Rose ' ' [],Rose 'L' [],Rose 'E' [],Rose 'C' [],Rose 'H' [],Rose 'E' []]
 
 --rt1 = rtHoja 1
 --rt2 = Rose 0 [rt1, rt1]
