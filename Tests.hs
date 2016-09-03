@@ -112,8 +112,8 @@ testsExpRepeticion = test [
 testsExpListasDeLongitud = test [
   all (\x->elem x (listasDeLongitud 2)) [[1,1],[1,2],[2,1],[1,3],[2,2],[3,1]] ~=? True,
   [] ~=? take 0 (listasDeLongitud 3),
-  all (\x->elem x (listasDeLongitud 8)) [[1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,2],[1,1,1,1,1,1,2,1]] ~=? True
-  -- True ~=? elem [9,10,9] (listasDeLongitud 3)
+  all (\x->elem x (listasDeLongitud 8)) [[1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,2],[1,1,1,1,1,1,2,1]] ~=? True,
+  True ~=? elem [9,10,9] (listasDeLongitud 3)
   ]
 
 testsExpComposicion1 = test [

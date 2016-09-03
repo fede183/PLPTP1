@@ -118,8 +118,14 @@ ifExp condicion exp1 exp2 = (\estructura -> if condicion estructura then exp1 es
 (<^>) exp1 n = (iterate ((<.>) exp1) exp1) !! fromIntegral (n-1)
 
 --Ejercicio 11 (implementar al menos una de las dos)
+-- listasDeLongitud :: Explorador Integer [Integer]
+-- listasDeLongitud = (\n -> [lista | y <- [n..], lista <- listasQueSuman y, (length lista) == fromIntegral n])
+
 listasDeLongitud :: Explorador Integer [Integer]
-listasDeLongitud = (\n -> [lista | y <- [n..], lista <- listasQueSuman y, (length lista) == fromIntegral n])
+listasDeLongitud = (\n -> [lista | y <- [n..], lista <- listasQueSumanConLong y n])
+
+listasQueSumanConLong :: Integer -> Integer -> [[Integer]]
+listasQueSumanConLong = (\x n -> if n == 0 then [[]] else [y:lista | y <- [1..x], lista <- listasQueSumanConLong (x-y) (n-1), sum(lista) + y == x])
 
 
 (<*>) :: Explorador a a -> Explorador a [a]
