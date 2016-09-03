@@ -51,6 +51,7 @@ testsExpListas = test [
   ([[]] :: [[Algo]]) ~=? sufijos [],
   sort ["abc", "bc", "c", ""] ~=? sort (sufijos "abc"),
   sort [[8,4,3,2], [4, 3, 2], [3,2], [2], []] ~=? sort (sufijos [8, 4, 3, 2])
+--[["C"], ["A"], ["F"], ["E"], [" "], ["C"], ["O"], ["N"], [" "], ["L"], ["E"], ["C"], ["H"], ["E"]] ~=? singletons "CAFE CON LECHE"
   ]
 
 testsExpNaturales = test [
