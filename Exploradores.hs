@@ -28,13 +28,6 @@ instance Show a => Show (AB a) where
 padAB _ _ Nil = ""
 padAB n base (Bin i x d) = pad n ++ show x ++ padAB 4 (base+l) i ++ "\n" ++ padAB (n+4+base+l) base d where l = length $ show x
 
-listaAB :: AB a-> [AB a]
-listaAB Nil = []
-listaAB (Bin izq r der) = (izq:(der:[]))
-
-listaRT :: RoseTree a -> [RoseTree a]
--- listaRT (Rose raiz []) = []
-listaRT (Rose raiz hijos) = hijos
 
 --Ejercicio 1
 expNulo :: Explorador a b
@@ -44,10 +37,11 @@ expId :: Explorador a a
 expId = (\x -> [x])
 
 expHijosRT :: Explorador (RoseTree a) (RoseTree a)
-expHijosRT = (\r -> listaRT(r))
+expHijosRT (Rose raiz hijos) = hijos
 
 expHijosAB :: Explorador(AB a) (AB a)
-expHijosAB = (\a -> listaAB(a))
+expHijosAB Nil = []
+expHijosAB (Bin izq r der) = izq:der:[]
 
 expTail :: Explorador [a] a
 expTail = (\a -> if length a /= 0 then tail(a) else [])
@@ -114,7 +108,6 @@ ifExp condicion exp1 exp2 = (\estructura -> if condicion estructura then exp1 es
 
 --Ejercicio 10
 (<^>) :: Explorador a a -> Integer -> Explorador a a
--- (<^>) exp1 n = (\estructura -> foldNat (\n recu -> concat (map (exp1) recu)) (exp1 estructura) (n-1))
 (<^>) exp1 n = (iterate ((<.>) exp1) exp1) !! fromIntegral (n-1)
 
 --Ejercicio 11 (implementar al menos una de las dos)
@@ -128,4 +121,6 @@ listasQueSumanConLong x n = [y:lista  | y <- [1..(x-1)], lista <- listasQueSuman
 
 
 (<*>) :: Explorador a a -> Explorador a [a]
-(<*>) exp1 = (\estructura -> takeWhile (\recu -> length recu /= 0 ) (iterate (\recu -> concat (map exp1 recu)) [estructura]))
+--(<*>) exp1 = (\estructura -> takeWhile (\recu -> length recu /= 0 ) (iterate (\recu -> concat (map exp1 recu)) [estructura]))
+(<*>) exp = (\estructura -> takeWhile (\elemento -> length elemento /= 0 ) (map ($estructura) (iterate ((<.>) exp) expId)))
+
