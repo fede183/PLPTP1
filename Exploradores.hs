@@ -104,11 +104,11 @@ ifExp condicion exp1 exp2 = (\estructura -> if condicion estructura then exp1 es
 
 --Ejercicio 9
 (<.>) :: Explorador b c -> Explorador a b -> Explorador a c
-(<.>) exp1 exp2 = (\estructura -> concat(map (exp1) (exp2 estructura)))
+(<.>) exp1 exp2 = (\estructura -> concatMap (exp1) (exp2 estructura))
 
 --Ejercicio 10
 (<^>) :: Explorador a a -> Integer -> Explorador a a
-(<^>) exp1 n = (iterate ((<.>) exp1) exp1) !! fromIntegral (n-1)
+(<^>) exp n = (iterate ((<.>) exp) expId) !! fromIntegral (n)
 
 --Ejercicio 11 (implementar al menos una de las dos)
 listasDeLongitud :: Explorador Integer [Integer]
@@ -123,4 +123,3 @@ listasQueSumanConLong x n = [y:lista  | y <- [1..(x-1)], lista <- listasQueSuman
 (<*>) :: Explorador a a -> Explorador a [a]
 --(<*>) exp1 = (\estructura -> takeWhile (\recu -> length recu /= 0 ) (iterate (\recu -> concat (map exp1 recu)) [estructura]))
 (<*>) exp = (\estructura -> takeWhile (\elemento -> length elemento /= 0 ) (map ($estructura) (iterate ((<.>) exp) expId)))
-
