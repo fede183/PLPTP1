@@ -69,10 +69,7 @@ sufijos = foldr (\x recu -> (([x] ++ head(recu)):recu)) [[]]
 --Ejercicio 4
 listasQueSuman :: Explorador Integer [Integer]
 listasQueSuman = (\n -> if n == 0 then [[]] else [n]:[y:lista | y <- [1..n-1], lista <- listasQueSuman (n-y)])
--- ideas de porqué no se puede usar foldNat:
--- el caso base de foldNat es 0, y nosotros queremos parar en 1.
--- También, el primer elemento que procesa es n, cuando lo que
--- no hace recursion estructural ?
+-- El esquema de recusion de foldNat no es adecuado para este ejercicio ya que necesitamos hacer en cada paso, n-1 llamados recursivos (desde 1 a n-1).
 
 --Ejercicio 5
 preorder :: Explorador (AB a) a
@@ -119,7 +116,5 @@ listasQueSumanConLong _ 0 = [[]]
 listasQueSumanConLong x 1 = [[x]]
 listasQueSumanConLong x n = [y:lista  | y <- [1..(x-1)], lista <- listasQueSumanConLong (x-y) (n-1)]
 
-
 (<*>) :: Explorador a a -> Explorador a [a]
---(<*>) exp1 = (\estructura -> takeWhile (\recu -> length recu /= 0 ) (iterate (\recu -> concat (map exp1 recu)) [estructura]))
 (<*>) exp = (\estructura -> takeWhile (\elemento -> length elemento /= 0 ) (map ($estructura) (iterate ((<.>) exp) expId)))
