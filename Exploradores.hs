@@ -47,10 +47,10 @@ expTail :: Explorador [a] a
 expTail = (\a -> if not $ null a then tail a else [])
 
 --Ejercicio 2
-foldNat :: (Integer -> b -> b) -> b -> Integer -> b
+foldNat :: (b -> b) -> b -> Integer -> b
+foldNat recu base 0 = base
 foldNat recu base n | n < 0 = error "No se permiten numero negativos"
-                    | n == 0 = base
-                    | otherwise = recu n (foldNat recu base (n-1))
+                    | otherwise = recu (foldNat recu base (n-1))
 
 foldRT :: (a -> [b] -> b) -> RoseTree a -> b
 foldRT recu (Rose root hijos) = recu root (map (foldRT recu) hijos)
