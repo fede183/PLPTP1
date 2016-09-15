@@ -44,7 +44,7 @@ expHijosAB Nil = []
 expHijosAB (Bin izq r der) = izq:der:[]
 
 expTail :: Explorador [a] a
-expTail = (\a -> if length a /= 0 then tail(a) else [])
+expTail = (\a -> if not $ null a then tail a else [])
 
 --Ejercicio 2
 foldNat :: (Integer -> b -> b) -> b -> Integer -> b
@@ -57,7 +57,8 @@ foldRT recu (Rose root hijos) = recu root (map (foldRT recu) hijos)
 
 foldAB :: (b -> a -> b -> b) -> b -> AB a -> b
 foldAB recu base Nil = base
-foldAB recu base (Bin izq root der) = recu (foldAB recu base izq) root (foldAB recu base der)
+foldAB recu base (Bin izq root der) = recu (fold izq) root (fold der)
+        where fold = foldAB recu base
 
 --Ejercicio 3
 singletons :: Explorador [a] [a]
@@ -68,7 +69,7 @@ sufijos = foldr (\x recu -> (([x] ++ head(recu)):recu)) [[]]
 
 --Ejercicio 4
 listasQueSuman :: Explorador Integer [Integer]
-listasQueSuman = (\n -> if n == 0 then [[]] else [n]:[y:lista | y <- [1..n-1], lista <- listasQueSuman (n-y)])
+listasQueSuman = (\n -> if n == 0 then [[]] else [y:lista | y <- [1..n], lista <- listasQueSuman (n-y)])
 -- El esquema de recusion de foldNat no es adecuado para este ejercicio ya que necesitamos hacer en cada paso, n-1 llamados recursivos (desde 1 a n-1).
 
 --Ejercicio 5
@@ -76,7 +77,7 @@ preorder :: Explorador (AB a) a
 preorder = foldAB (\izq raiz der -> raiz : izq ++ der)[]
 
 inorder :: Explorador (AB a) a
-inorder = foldAB (\izq raiz der -> izq ++ [raiz] ++ der)[]
+inorder = foldAB (\izq raiz der -> izq ++ raiz : der)[]
 
 postorder :: Explorador (AB a) a
 postorder = foldAB (\izq raiz der -> izq ++ der ++ [raiz])[]
@@ -101,11 +102,11 @@ ifExp condicion exp1 exp2 = (\estructura -> if condicion estructura then exp1 es
 
 --Ejercicio 9
 (<.>) :: Explorador b c -> Explorador a b -> Explorador a c
-(<.>) exp1 exp2 = (\estructura -> concatMap (exp1) (exp2 estructura))
+(<.>) exp1 exp2 = concatMap exp1 . exp2
 
 --Ejercicio 10
 (<^>) :: Explorador a a -> Integer -> Explorador a a
-(<^>) exp n = (iterate ((<.>) exp) expId) !! fromIntegral (n)
+(<^>) exp n = (iterate ((<.>) exp) expId) !! fromIntegral n
 
 --Ejercicio 11 (implementar al menos una de las dos)
 listasDeLongitud :: Explorador Integer [Integer]
@@ -117,4 +118,4 @@ listasQueSumanConLong x 1 = [[x]]
 listasQueSumanConLong x n = [y:lista  | y <- [1..(x-1)], lista <- listasQueSumanConLong (x-y) (n-1)]
 
 (<*>) :: Explorador a a -> Explorador a [a]
-(<*>) exp = (\estructura -> takeWhile (\elemento -> length elemento /= 0 ) (map ($estructura) (iterate ((<.>) exp) expId)))
+(<*>) exp = (\estructura -> takeWhile (not.null) (map ($estructura) (iterate ((<.>) exp) expId)))
