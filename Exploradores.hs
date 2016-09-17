@@ -62,10 +62,11 @@ foldAB recu base (Bin izq root der) = recu (fold izq) root (fold der)
 
 --Ejercicio 3
 singletons :: Explorador [a] [a]
-singletons = foldr (\x recu -> [x]:recu) []
+singletons = map expId
 
 sufijos :: Explorador [a] [a]
 sufijos = foldr (\x recu -> (([x] ++ head(recu)):recu)) [[]]
+-- falta comentario que explique, ya que está usando algo del resultado (head (recu))
 
 --Ejercicio 4
 listasQueSuman :: Explorador Integer [Integer]
@@ -106,16 +107,17 @@ ifExp condicion exp1 exp2 = (\estructura -> if condicion estructura then exp1 es
 
 --Ejercicio 10
 (<^>) :: Explorador a a -> Integer -> Explorador a a
-(<^>) exp n = (iterate ((<.>) exp) expId) !! fromIntegral n
+(<^>) exp = foldNat (<.> exp) expId
 
 --Ejercicio 11 (implementar al menos una de las dos)
 listasDeLongitud :: Explorador Integer [Integer]
 listasDeLongitud = (\n -> [lista | y <- [n..], lista <- listasQueSumanConLong y n])
 
 listasQueSumanConLong :: Integer -> Integer -> [[Integer]]
-listasQueSumanConLong _ 0 = [[]]
-listasQueSumanConLong x 1 = [[x]]
-listasQueSumanConLong x n = [y:lista  | y <- [1..(x-1)], lista <- listasQueSumanConLong (x-y) (n-1)]
+listasQueSumanConLong x = foldNat (\recu -> ) []
+-- listasQueSumanConLong _ 0 = [[]]
+-- listasQueSumanConLong x 1 = [[x]]
+-- listasQueSumanConLong x n = [y:lista  | y <- [1..(x-1)], lista <- listasQueSumanConLong (x-y) (n-1)]
 
 (<*>) :: Explorador a a -> Explorador a [a]
 (<*>) exp = (\estructura -> takeWhile (not.null) (map ($estructura) (iterate ((<.>) exp) expId)))
