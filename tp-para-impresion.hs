@@ -16,7 +16,8 @@ instance Show a => Show (RoseTree a) where
     show x = concatMap (++"\n") (padTree 0 x)
 
 padTree :: Show a => Int -> RoseTree a -> [String]
-padTree i (Rose x ys) =  ((pad i) ++  (show x) ) : (concatMap (padTree (i + 4)) ys)
+padTree i (Rose x ys) =  ((pad i) ++  (show x) ) :
+  (concatMap (padTree (i + 4)) ys)
 
 pad :: Int -> String
 pad i = replicate i ' '
@@ -71,7 +72,8 @@ sufijos = foldr (\x recu -> ((x : head recu):recu)) [[]]
 --Ejercicio 4
 -- El esquema de recusion de foldNat no es adecuado para este ejercicio ya que necesitamos hacer en cada paso, n-1 llamados recursivos (desde 1 a n-1).
 listasQueSuman :: Explorador Integer [Integer]
-listasQueSuman = (\n -> if n == 0 then [[]] else [y:lista | y <- [1..n], lista <- listasQueSuman (n-y)])
+listasQueSuman = (\n -> if n == 0 then [[]] else [y:lista | y <- [1..n],
+  lista <- listasQueSuman (n-y)])
 
 --Ejercicio 5
 preorder :: Explorador (AB a) a
@@ -88,14 +90,17 @@ dfsRT :: Explorador (RoseTree a) a
 dfsRT = foldRT (\root recu -> root:concat recu)
 
 hojasRT :: Explorador (RoseTree a) a
-hojasRT = foldRT (\root recu -> if length recu == 0 then [root] else concat recu)
+hojasRT = foldRT (\root recu -> if length recu == 0 then [root] else
+  concat recu)
 
 ramasRT :: Explorador (RoseTree a) [a]
-ramasRT = foldRT (\root recu -> if length recu == 0 then [[root]] else map ((:) root) (concat recu))
+ramasRT = foldRT (\root recu -> if length recu == 0 then [[root]] else
+  map ((:) root) (concat recu))
 
 --Ejercicio 7
 ifExp :: (a->Bool) -> Explorador a b -> Explorador a b -> Explorador a b
-ifExp condicion exp1 exp2 = (\estructura -> if condicion estructura then exp1 estructura else exp2 estructura)
+ifExp condicion exp1 exp2 = (\estructura -> if condicion estructura then
+  exp1 estructura else exp2 estructura)
 
 --Ejercicio 8
 (<++>) :: Explorador a b -> Explorador a b -> Explorador a b
@@ -111,10 +116,12 @@ ifExp condicion exp1 exp2 = (\estructura -> if condicion estructura then exp1 es
 
 --Ejercicio 11 (implementar al menos una de las dos)
 listasDeLongitud :: Explorador Integer [Integer]
-listasDeLongitud = (\n -> [lista | y <- [(n-1)..], lista <- listasConLongQueSuman (n-1) y])
+listasDeLongitud = (\n -> [lista | y <- [(n-1)..],
+  lista <- listasConLongQueSuman (n-1) y])
 
 listasConLongQueSuman :: Integer -> Integer -> [[Integer]]
 listasConLongQueSuman = foldNat (\recu -> (\x -> [y:lista  | y <- [1..(x-1)], lista <- recu (x-y)])) (\x -> [[x]])
 
 (<*>) :: Explorador a a -> Explorador a [a]
-(<*>) exp = (\estructura -> takeWhile (not.null) (map ($estructura) (iterate ((<.>) exp) expId)))
+(<*>) exp = (\estructura -> takeWhile (not.null) (map ($estructura)
+  (iterate ((<.>) exp) expId)))
