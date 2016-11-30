@@ -65,7 +65,7 @@ singletons :: Explorador [a] [a]
 singletons = map expId
 
 sufijos :: Explorador [a] [a]
-sufijos = foldr (\x recu -> (([x] ++ head(recu)):recu)) [[]]
+sufijos = foldr (\x recu -> ((x : head recu):recu)) [[]]
 -- falta comentario que explique, ya que está usando algo del resultado (head (recu))
 
 --Ejercicio 4
