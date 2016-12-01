@@ -66,12 +66,12 @@ singletons = map expId
 
 sufijos :: Explorador [a] [a]
 sufijos = foldr (\x recu -> ((x : head recu):recu)) [[]]
--- falta comentario que explique, ya que esta usando algo del resultado (head (recu))
+-- si imaginamos que la lista tiene la forma [1,2,...,x-1,x,x+1,...,n], entonces en el caso recursivo del fold, recu tiene todos los sufijos de la lista [x+1,...,n]. Luego, para completar los sufijos de [x,x+1,...,n] solo nos falta agregar aquel que tiene todos los elementos anteriores y x en el orden correcto. Como head recu es el ultimo sufijo construido de la lista [x+1,...,n], es exactamente [x+1,...,n], por lo que al agregarle x al princpio nos queda el sufijo [x,x+1,...,n].
 
 --Ejercicio 4
--- El esquema de recusion de foldNat no es adecuado para este ejercicio ya que necesitamos hacer en cada paso, n-1 llamados recursivos (desde 1 a n-1).
 listasQueSuman :: Explorador Integer [Integer]
 listasQueSuman = (\n -> if n == 0 then [[]] else [y:lista | y <- [1..n], lista <- listasQueSuman (n-y)])
+-- El esquema de recusion de foldNat no es adecuado para este ejercicio ya que el parametro del llamado recursivo no va descendiendo de a uno. De hecho, dado un n, el Explorador hace n llamados recursivos con valores distintos a la función listasQueSuman.
 
 --Ejercicio 5
 preorder :: Explorador (AB a) a
